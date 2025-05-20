@@ -5,6 +5,7 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+use App\Livewire\TaskList;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,7 +25,12 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [TaskController::class, 'index'])->name('dashboard');
-    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/tarefas/criar', [TaskController::class, 'create'])->name('tasks.create');
+    Route::post('/tarefas', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/tarefas/kanban', [TaskController::class, 'kanban'])->name('tasks.kanban');
+    Route::post('/tarefas/{task}/atualizar-status', [TaskController::class, 'updateStatus']);
 });
 
-require __DIR__.'/auth.php';
+Route::get('/tasks', TaskList::class);
+
+require __DIR__ . '/auth.php';
